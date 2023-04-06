@@ -1,0 +1,11 @@
+B 10 20
+G P O Y O Y R B P P
+B P O Y B G R R Y Y
+P P Y B R O O G B R
+Y O Y O Y O Y O Y O
+G R B G R B G R B G
+P Y P Y P Y P Y P Y
+Y O Y O Y O Y O Y O
+G R B G R B G R B G
+P Y P Y P Y P Y P Y
+P Y P Y P Y P Y P Y
