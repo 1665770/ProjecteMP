@@ -38,7 +38,7 @@ public:
 	void setTipus(const TipusCandy& nouTipus) { m_tipus = nouTipus; }
 	void setColor(const ColorCandy& nouColor) { m_color = nouColor; }
 
-	bool comprovaCompatibilitat(const Candy& candy2) const { return m_tipus == candy2.getTipus(); } // TRUE SI COMPATIBLES, FALSE SI INCOMPATIBLES
+	bool comprovaCompatibilitat(const Candy& candy2) const { return (m_Color == candy2.getColor(); } // TRUE SI COMPATIBLES, FALSE SI INCOMPATIBLES
 	
 	
 

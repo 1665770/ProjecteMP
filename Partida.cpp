@@ -1,4 +1,5 @@
 #include "partida.h"
+#include "Tauler.h"
 
 void Partida::inicialitza(const string& nomFitxer)
 {
@@ -28,11 +29,24 @@ void Partida::inicialitza(const string& nomFitxer)
 	}
 }
 
-//void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2)
-//{
-//
-//}
-//
+void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2)
+{
+	bool conectivitatVertical = false, conectivitatHoritzontal = false;
+	Posicio posicioHoritzontal;
+	posicioHoritzontal.setColumna(pos2.GetColumna() + 1);
+	posicioHoritzonal.setFila(pos2.GetFila());
+	if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioHoritzontal) // COMPROVA COMPATIBILITAT HORITZONTAL
+	{
+		int caramelsConectatsHoritzontal = 1;
+		conectivitatHoritzontal = true;
+		while (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioHoritzontal)) && posicioHoritzontal.getColumna()
+		{
+
+		}
+
+	}
+}
+
 
 void Partida::escriuTauler(const string& nomFitxer)
 {
