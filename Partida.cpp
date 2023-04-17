@@ -1,5 +1,8 @@
+#pragma once
+
 #include "partida.h"
 #include "Tauler.h"
+#include "Posicio.h"
 
 void Partida::inicialitza(const string& nomFitxer)
 {
@@ -29,22 +32,41 @@ void Partida::inicialitza(const string& nomFitxer)
 	}
 }
 
-void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2)
+void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PER SOPOSAT QUE LES DUES POSICIONS SÓN CONTINUES, S'HAURIA DE COMPROVAR TAMBÉ???
 {
-	bool conectivitatVertical = false, conectivitatHoritzontal = false;
-	Posicio posicioHoritzontal;
-	posicioHoritzontal.setColumna(pos2.GetColumna() + 1);
-	posicioHoritzonal.setFila(pos2.GetFila());
-	if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioHoritzontal) // COMPROVA COMPATIBILITAT HORITZONTAL
+	char direccioMoviment=dirMoviment() // S'HA DE SABER EN QUINA DIRECCIÓ ES FA EL CANVI DE CARAMEL PER CARAMEL PER SABER QUINES COMPROVACIONS S'HAN DE FER.
+	bool conectivitatHoritzontal = false, conectivitatVertical = false;
+	Posicio posicioConectable;
+	posicioConectable.setFila(pos2.GetFila());
+	posicioConectable.setColumna(pos2.GetColumna() + 1);
+	if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioConectable) && posicioConectable.GetColumna()+1<N_COLUMNES) // COMPROVA COMPATIBILITAT HORITZONTAL AMB COLUMNA DE LA DRETA
 	{
-		int caramelsConectatsHoritzontal = 1;
 		conectivitatHoritzontal = true;
-		while (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioHoritzontal)) && posicioHoritzontal.getColumna()
-		{
-
-		}
-
 	}
+	else
+	{
+		posicioConectable.setColumna(pos2.GetColumna()-1);
+		if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioConectable)) && posicioConectable.GetColumna() - 1 > 0) // COMPROVA COMPATIBILITAT HORITZONTAL AMB COLUMNES DE L'ESQUERRA
+		{
+			conectivitatHoritzontal = true;
+		}
+	}
+
+	posicioConectable.setColumna(pos2.GetColumna());
+	posicioConectable.setFila(pos2.GetFila() + 1);
+	if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioConectable) && posicioConectable.GetFila() + 1 < N_FILES)) // COMPROVA COMPATIBILITAT VERTICAL AMB FILA DE BAIX
+	{
+		conectivitatVertical = true;
+	}
+	else
+	{
+		posicioConectable.setFila(pos2.GetFila() - 1);
+		if (m_tauler.GetCandy(pos1).comprovaCompatibilitat(m_tauler.GetCandy(posicioVertical)) && posicioConectable.GetFila() - 1 > 0)
+		{
+			conectivitatVertical = true;
+		}
+	}
+
 }
 
 
