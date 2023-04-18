@@ -17,6 +17,7 @@ public:
 
 	Posicio sumaFila(int filaASumar) { Posicio pos(m_fila + filaASumar, m_columna); return pos; }
 	Posicio sumaColumna(int ColumnaASumar) { Posicio pos(m_fila, m_columna + ColumnaASumar); return pos; }
+	bool operator==(const Posicio& pos) { return m_fila == pos.m_fila && m_columna == pos.m_columna; }
 };
 
 #endif

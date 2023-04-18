@@ -35,12 +35,17 @@ void Partida::inicialitza(const string& nomFitxer)
 void afegeixPosicions(Posicio posicions[], Posicio pos)
 {
 	int i = 0;
-	while (i < (N_FILES * N_COLUMNES))
+	bool trobat = false;
+	while (i < (N_FILES * N_COLUMNES) && !trobat)
 	{
-		if (posicions[i].GetFila() == -1)
+		if (posicions[i] == pos)
+		{
+			trobat = true;
+		}
+		else if (posicions[i].GetFila() == -1)
 		{
 			posicions[i] = pos;
-			break;
+			trobat = true;
 		}
 		else
 			i++;
@@ -68,7 +73,7 @@ bool Partida::comprovacio() // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICI
 	for (int fila = 0; fila < N_FILES; fila++) // AIXÒ COMPROVA SI HI HA COMPATIBILITAT A LES FILES
 	{
 		int columna = 0, nConcatenades = 1;
-		while (columna < N_COLUMNES - 1)
+		while (columna < N_COLUMNES - 1 && columna + nConcatenades < N_COLUMNES)
 		{
 			Posicio posicioActual(fila, columna);
 
@@ -98,7 +103,7 @@ bool Partida::comprovacio() // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICI
 	for (int columna = 0; columna < N_FILES; columna++) // AIXÒ COMPROVA SI HI HA COMPATIBILITAT A LES COLUMNES
 	{
 		int fila = 0, nConcatenades = 1;
-		while (fila < N_FILES - 1)
+		while (fila < N_FILES - 1 && fila + nConcatenades < N_FILES)
 		{
 			Posicio posicioActual(fila, columna);
 
