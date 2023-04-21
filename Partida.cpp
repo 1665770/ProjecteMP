@@ -12,22 +12,15 @@ void Partida::inicialitza(const string& nomFitxer)
 	{
 		string aux;
 		int naux;
+		Tauler taux;
 		fitxer >> aux;
 		m_objectiu = StringACandy(aux);
 		fitxer >> naux;
 		m_nObjectius = naux;
 		fitxer >> naux;
 		m_nMoviments = naux;
-		for (int i = 0; i < N_FILES; i++)
-		{
-			for (int j = 0; j < N_COLUMNES; j++)
-			{
-				Posicio pos(i, j);
-				Candy candy;
-				fitxer >> candy;
-				m_tauler.setCandy(pos, candy);
-			}
-		}
+		fitxer >> taux;
+		m_tauler = taux;
 		fitxer.close();
 	}
 }
@@ -57,18 +50,24 @@ void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PE
 	Candy aux = m_tauler.GetCandy(pos1);
 	m_tauler.setCandy(pos1, m_tauler.GetCandy(pos2));
 	m_tauler.setCandy(pos2, aux);
-	if (!comprovacio())
+	Posicio PosicionsABorrar[N_FILES * N_COLUMNES];
+	if (!comprovacio(PosicionsABorrar))
 	{
 		Candy aux = m_tauler.GetCandy(pos1);
 		m_tauler.setCandy(pos1, m_tauler.GetCandy(pos2));
 		m_tauler.setCandy(pos2, aux);
 	}
-
+	else
+	{
+		// s'haura de comprovar si hi ha rallat
+		m_tauler.BorraPosicions(PosicionsABorrar);
+		m_tauler.BaixaCandys(PosicionsABorrar);
+		// falta posar els nous candys i repetir
+	}
 }
 
-bool Partida::comprovacio() // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICIÓ
+bool Partida::comprovacio(Posicio posicionsBorrables[]) // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICIÓ
 {
-	Posicio posicionsBorrables[N_FILES * N_COLUMNES];
 
 	for (int fila = 0; fila < N_FILES; fila++) // AIXÒ COMPROVA SI HI HA COMPATIBILITAT A LES FILES
 	{

@@ -13,7 +13,7 @@ public:
 	void inicialitza(const string& nomFitxer);
 	void fesMoviment(const Posicio& pos1, const Posicio& pos2);
 	void escriuTauler(const string& nomFitxer);
-	bool comprovacio();
+	bool comprovacio(Posicio posicionsBorrables[]);
 private:
 	Tauler m_tauler;
 	Candy m_objectiu;
