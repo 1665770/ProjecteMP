@@ -43,7 +43,7 @@ void Tauler::BaixaCandys(Posicio PosicionsBorrades[])
 
 void Tauler::GeneraNousCandys() //ANDREU // FA QUE ES GENERIN NOUS CANDYS A LES POSICIONS BUIDES
 {
-	for (int fila = N_FILES-1;fila >= 0;fila++)
+	for (int fila = N_FILES-1;fila >= 0;fila--)
 	{
 		for (int columna = 0;columna < N_COLUMNES;columna++)
 		{
