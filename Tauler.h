@@ -11,12 +11,15 @@ using namespace std;
 class Tauler
 {
 public:
+	Candy() { indexNouCarmel = 0; } //ANDREU
 	void setCandy(const Posicio& pos, const Candy& candy) { m_tauler[pos.GetFila()][pos.GetColumna()] = candy; }
 	Candy& GetCandy(const Posicio& pos) { return m_tauler[pos.GetFila()][pos.GetColumna()]; }
 	void BorraPosicions(Posicio PosicionsABorrar[]);
 	void BaixaCandys(Posicio PosicionsBorrades[]);
+	void GeneraNousCandys() //ANDREU
 private:
 	Candy m_tauler[N_FILES][N_COLUMNES];
+	int indexNouCarmel; //ANDREU
 };
 
 ofstream& operator<<(ofstream& output, Tauler& tauler);

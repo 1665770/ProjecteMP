@@ -41,6 +41,47 @@ void Tauler::BaixaCandys(Posicio PosicionsBorrades[])
 	}
 }
 
+void Tauler::GeneraNousCandys() //ANDREU // FA QUE ES GENERIN NOUS CANDYS A LES POSICIONS BUIDES
+{
+	for (int fila = N_FILES;fila >= 0;fila++)
+	{
+		for (int columna = 0;columna < N_COLUMNES;columna++)
+		{
+			if (m_tauler[fila][columna].getColor() == -1)
+			{
+				int nouColor;
+				switch (indexNouCarmel)
+				{
+				case 0:
+					nouColor = 4;
+					break;
+				case 1:
+					nouColor = 3;
+					break;
+				case 2:
+					nouColor = 5;
+					break;
+				case 3:
+					nouColor = 2;
+					break;
+				case 4:
+					nouColor = 0;
+					break;
+				case 5:
+					nouColor = 1;
+					break;
+				};
+
+				Candy nouCandy(NORMAL, nouColor);
+				m_tauler[fila][columna] = nouCandy;
+				indexNouCarmel++;
+				if (indexNouCarmel == N_TIPUS_CARMELS)
+					indexNouCarmel = 0;
+			}
+		}
+	}
+}
+
 ofstream& operator<<(ofstream& output, Tauler& tauler)
 {
 	for (int i = 0; i < N_FILES; i++)

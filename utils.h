@@ -41,5 +41,6 @@ typedef enum
 
 #define N_FILES 10
 #define N_COLUMNES 10
+#define N_TIPUS_CARMELS 6 //ANDREU
 
 #endif

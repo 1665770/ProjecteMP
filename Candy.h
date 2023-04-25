@@ -13,6 +13,7 @@ private:
 
 public:
 	Candy() { m_tipus = NO_TIPUS; m_color = NO_COLOR; }
+	Candy(int nouTipus, int nouColor) { m_tipus = nouTipus; m_color = nouColor; } //ANDREU
 	int getTipus() const { return m_tipus; }
 	int getColor() const { return m_color; }
 	void convertirAString(string& color) const; // retorna el candy com a una string
