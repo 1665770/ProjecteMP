@@ -45,13 +45,31 @@ void afegeixPosicions(Posicio posicions[], Posicio pos)
 	}
 }
 
-void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PER SOPOSAT QUE LES DUES POSICIONS SÓN CONTINUES
+void inicialitzaPosicions(Posicio posicions[])
+{
+	int i = 0;
+	while (posicions[i].GetColumna() != -1)
+	{
+		posicions[i].inicialitza();
+		i++;
+	}
+}
+
+
+void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PER SOPOSAT QUE LES DUES POSICIONS SÓN CONTIGUES
 {
 	Candy aux = m_tauler.GetCandy(pos1);
 	m_tauler.setCandy(pos1, m_tauler.GetCandy(pos2));
 	m_tauler.setCandy(pos2, aux);
-	Posicio PosicionsABorrar[N_FILES * N_COLUMNES];
-	if (!comprovacio(PosicionsABorrar))
+
+	// arrays que porten les posicions dels candys a borrar diferenciats per match horitzontal i match vertical
+	Posicio PosicionsABorrarH[N_FILES * N_COLUMNES];
+	Posicio PosicionsABorrarV[N_FILES * N_COLUMNES];
+	// array que porta els candy, direccio i la primera posicio,d'on hi ha una fila o columna de 4 candys iguals
+	Posicio PosicionsRatllat[N_FILES * N_COLUMNES];
+	bool matchH = comprovacioH(PosicionsABorrarH, PosicionsRatllat);
+	bool matchV = comprovacioV(PosicionsABorrarV, PosicionsRatllat);
+	if (!matchH && !matchV)
 	{
 		Candy aux = m_tauler.GetCandy(pos1);
 		m_tauler.setCandy(pos1, m_tauler.GetCandy(pos2));
@@ -59,16 +77,31 @@ void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PE
 	}
 	else
 	{
-		// s'haura de comprovar si hi ha rallat
-		m_tauler.BorraPosicions(PosicionsABorrar);
-		m_tauler.BaixaCandys(PosicionsABorrar);
-		// falta posar els nous candys i repetir
+		// borra els candis dels arrays de posicions i a més crea els ratllats
+		m_tauler.BorraPosicions(PosicionsABorrarH, PosicionsABorrarV, PosicionsRatllat, pos1, pos2, MATCHING_PRIMARI);
+		m_tauler.BaixaCandys();
+		m_tauler.GeneraNousCandys();
+		inicialitzaPosicions(PosicionsABorrarH);
+		inicialitzaPosicions(PosicionsABorrarV);
+		inicialitzaPosicions(PosicionsRatllat);
+		matchH = comprovacioH(PosicionsABorrarH, PosicionsRatllat);
+		matchV = comprovacioV(PosicionsABorrarV, PosicionsRatllat);
+		while (matchH || matchV)
+		{
+			m_tauler.BorraPosicions(PosicionsABorrarH, PosicionsABorrarV, PosicionsRatllat, pos1, pos2, MATCHING_SECUNDARI);
+			m_tauler.BaixaCandys();
+			m_tauler.GeneraNousCandys();
+			inicialitzaPosicions(PosicionsABorrarH);
+			inicialitzaPosicions(PosicionsABorrarV);
+			inicialitzaPosicions(PosicionsRatllat);
+			matchH = comprovacioH(PosicionsABorrarH, PosicionsRatllat);
+			matchV = comprovacioV(PosicionsABorrarV, PosicionsRatllat);
+		}
 	}
 }
 
-bool Partida::comprovacio(Posicio posicionsBorrables[]) // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICIÓ
+bool Partida::comprovacioH(Posicio posicionsBorrables[], Posicio posicionsRatllat[]) // RETORNA TRUE SI S'HA DE BORRAR ALMENYS UNA POSICIÓ
 {
-
 	for (int fila = 0; fila < N_FILES; fila++) // AIXÒ COMPROVA SI HI HA COMPATIBILITAT A LES FILES
 	{
 		int columna = 0, nConcatenades = 1;
@@ -85,7 +118,13 @@ bool Partida::comprovacio(Posicio posicionsBorrables[]) // RETORNA TRUE SI S'HA 
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaColumna(nConcatenades - 2));
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaColumna(nConcatenades - 1));
 				}
-				else if (nConcatenades > 3)
+				else if (nConcatenades == 4)
+				{
+					afegeixPosicions(posicionsBorrables, posicioActual.sumaColumna(nConcatenades - 1));
+					// guarda la primera posicio de la fila on ha d'apareixer el ratllat
+					afegeixPosicions(posicionsRatllat, posicioActual);
+				}
+				else if (nConcatenades > 4)
 				{
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaColumna(nConcatenades - 1));
 				}
@@ -98,7 +137,11 @@ bool Partida::comprovacio(Posicio posicionsBorrables[]) // RETORNA TRUE SI S'HA 
 
 		}
 	}
+	return (posicionsBorrables[0].GetFila() != -1);
+}
 
+bool Partida::comprovacioV(Posicio posicionsBorrables[], Posicio posicionsRatllat[])
+{
 	for (int columna = 0; columna < N_FILES; columna++) // AIXÒ COMPROVA SI HI HA COMPATIBILITAT A LES COLUMNES
 	{
 		int fila = 0, nConcatenades = 1;
@@ -115,7 +158,13 @@ bool Partida::comprovacio(Posicio posicionsBorrables[]) // RETORNA TRUE SI S'HA 
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaFila(nConcatenades - 2));
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaFila(nConcatenades - 1));
 				}
-				else if (nConcatenades > 3)
+				else if (nConcatenades == 4)
+				{
+					afegeixPosicions(posicionsBorrables, posicioActual.sumaFila(nConcatenades - 1));
+					// guarda la primera posicio de la columna on ha d'apareixer el ratllat
+					afegeixPosicions(posicionsRatllat, posicioActual);
+				}
+				else if (nConcatenades > 4)
 				{
 					afegeixPosicions(posicionsBorrables, posicioActual.sumaFila(nConcatenades - 1));
 				}

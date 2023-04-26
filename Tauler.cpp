@@ -1,19 +1,102 @@
 #include "Tauler.h"
 
-// cambia els candys del array a candys buits
-void Tauler::BorraPosicions(Posicio PosicionsABorrar[])
+void Tauler::DeterminaRatllatPrimari(Posicio CaramelsRatllats[], const Posicio& pos1, const Posicio& pos2, Direccio direccioCaramel[], ColorCandy colorCaramel[])
+{
+	//com que el match es primari nomes he de comprovar si la primera posicio de caramels ratllats
+	//coincideix en fila o columna amb alguna de les posicions
+	if (CaramelsRatllats[0].GetColumna() != -1)
+	{
+		if (pos1.GetColumna() == pos2.GetColumna())
+		{
+			direccioCaramel[0] = HORIZONTAL;
+			if (CaramelsRatllats[0].GetFila() == pos1.GetFila())
+				CaramelsRatllats[0] = pos1;
+			else
+				CaramelsRatllats[0] = pos2;
+		}
+		else
+		{
+			direccioCaramel[0] = VERTICAL;
+			if (CaramelsRatllats[0].GetColumna() == pos1.GetColumna())
+				CaramelsRatllats[0] = pos1;
+			else
+				CaramelsRatllats[0] = pos2;
+		}
+		colorCaramel[0] = m_tauler[CaramelsRatllats[0].GetFila()][CaramelsRatllats[0].GetColumna()].getColor();
+	}
+}
+
+void Tauler::DeterminaRatllatSecundari(Posicio CaramelsRatllats[], Posicio PosicionsABorrarH[], Direccio direccioCaramel[], ColorCandy colorCaramel[])
+{
+	// com ara es match secundari nomes fa falta mirar la direccio perque caramelsRatllats ja esta posat com es vol
+	int i = 0;
+	while (CaramelsRatllats[i].GetColumna() != -1)
+	{
+		if (CaramelsRatllats[i].buscaPosicio(PosicionsABorrarH) != -1)
+		{
+			direccioCaramel[i] = HORIZONTAL;
+		}
+		else
+		{
+			direccioCaramel[i] = VERTICAL;
+		}
+		colorCaramel[i] = m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].getColor();
+		i++;
+	}
+}
+void Tauler::CreaRatllat(Posicio CaramelsRatllats[], Direccio direccioCaramel[], ColorCandy colorCaramel[])
 {
 	int i = 0;
-	while (PosicionsABorrar[i].GetColumna() != -1)
+	while (CaramelsRatllats[i].GetColumna() != -1)
 	{
-		m_tauler[PosicionsABorrar[i].GetFila()][PosicionsABorrar[i].GetColumna()].setColor(NO_COLOR);
-		m_tauler[PosicionsABorrar[i].GetFila()][PosicionsABorrar[i].GetColumna()].setTipus(NO_TIPUS);
+		m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].setColor(colorCaramel[i]);
+		if (direccioCaramel[i] = HORIZONTAL)
+		{
+			m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].setTipus(RATLLAT_HORIZONTAL);
+		}
+		else
+		{
+			m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].setTipus(RATLLAT_VERTICAL);
+		}
 		i++;
 	}
 }
 
+// cambia els candys del array a candys buits
+void Tauler::BorraPosicions(Posicio PosicionsABorrarH[], Posicio PosicionsABorrarV[], Posicio CaramelsRatllats[], Posicio pos1, Posicio pos2, TipusMatch tipus)
+{
+	Direccio direccioCaramel[N_COLUMNES * N_FILES];
+	ColorCandy colorCaramel[N_COLUMNES * N_FILES];
+	// Primer determinarem a on es crearan els ratllats i la seva direccio i color
+	if (tipus == MATCHING_PRIMARI)
+	{
+		DeterminaRatllatPrimari(CaramelsRatllats, pos1, pos2, direccioCaramel, colorCaramel);
+	}
+	if (tipus == MATCHING_SECUNDARI)
+	{
+		DeterminaRatllatSecundari(CaramelsRatllats, PosicionsABorrarH, direccioCaramel, colorCaramel);
+	}
+	// ara toca borrar els caramels falta detectar si es ratllat i borrar la fila o columna
+	int i = 0;
+	while (PosicionsABorrarH[i].GetColumna() != -1)
+	{
+		m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setColor(NO_COLOR);
+		m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setTipus(NO_TIPUS);
+		i++;
+	}
+	i = 0;
+	while (PosicionsABorrarV[i].GetColumna() != -1)
+	{
+		m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setColor(NO_COLOR);
+		m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setTipus(NO_TIPUS);
+		i++;
+	}
+	// finalment creem els ratllats a les posicions que els hi pertoquen
+	CreaRatllat(CaramelsRatllats, direccioCaramel, colorCaramel);
+}
+
 // Baixa tots els candys que tinguin candys buits a sota
-void Tauler::BaixaCandys(Posicio PosicionsBorrades[])
+void Tauler::BaixaCandys()
 {
 	for (int j = 0; j < N_COLUMNES; j++)
 	{
@@ -43,32 +126,32 @@ void Tauler::BaixaCandys(Posicio PosicionsBorrades[])
 
 void Tauler::GeneraNousCandys() //ANDREU // FA QUE ES GENERIN NOUS CANDYS A LES POSICIONS BUIDES
 {
-	for (int fila = N_FILES-1;fila >= 0;fila--)
+	for (int fila = N_FILES - 1; fila >= 0; fila--)
 	{
-		for (int columna = 0;columna < N_COLUMNES;columna++)
+		for (int columna = 0; columna < N_COLUMNES; columna++)
 		{
-			if (m_tauler[fila][columna].getColor() == -1)
+			if (m_tauler[fila][columna].getColor() == NO_COLOR)
 			{
-				int nouColor;
+				ColorCandy nouColor = NO_COLOR;
 				switch (indexNouCarmel)
 				{
 				case 0:
-					nouColor = 4;
+					nouColor = VERMELL;
 					break;
 				case 1:
-					nouColor = 3;
+					nouColor = TARONJA;
 					break;
 				case 2:
-					nouColor = 5;
+					nouColor = GROC;
 					break;
 				case 3:
-					nouColor = 2;
+					nouColor = BLAU;
 					break;
 				case 4:
-					nouColor = 0;
+					nouColor = VERD;
 					break;
 				case 5:
-					nouColor = 1;
+					nouColor = LILA;
 					break;
 				};
 

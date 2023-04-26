@@ -5,7 +5,6 @@
 #include "Candy.h"
 #include "utils.h"
 
-
 class Partida
 {
 public:
@@ -13,12 +12,15 @@ public:
 	void inicialitza(const string& nomFitxer);
 	void fesMoviment(const Posicio& pos1, const Posicio& pos2);
 	void escriuTauler(const string& nomFitxer);
-	bool comprovacio(Posicio posicionsBorrables[]);
+	bool comprovacioH(Posicio posicionsBorrablesH[], Posicio PosicionsRatllat[]);
+	bool comprovacioV(Posicio posicionsBorrablesV[], Posicio PosicionsRatllat[]);
 private:
 	Tauler m_tauler;
 	Candy m_objectiu;
 	int m_nMoviments;
 	int m_nObjectius;
 };
+
+
 
 #endif

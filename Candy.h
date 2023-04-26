@@ -10,12 +10,13 @@ class Candy
 private:
 	TipusCandy m_tipus;
 	ColorCandy m_color;
-
 public:
 	Candy() { m_tipus = NO_TIPUS; m_color = NO_COLOR; }
-	Candy(int nouTipus, int nouColor) { m_tipus = nouTipus; m_color = nouColor; } //ANDREU
-	int getTipus() const { return m_tipus; }
-	int getColor() const { return m_color; }
+
+	Candy(TipusCandy nouTipus, ColorCandy nouColor) { m_tipus = nouTipus; m_color = nouColor; } //ANDREU
+	TipusCandy getTipus() const { return m_tipus; }
+	ColorCandy getColor() const { return m_color; }
+
 	void convertirAString(string& color) const; // retorna el candy com a una string
 
 	void setTipus(const TipusCandy& nouTipus) { m_tipus = nouTipus; }
@@ -25,22 +26,12 @@ public:
 };
 Candy StringACandy(const string& stri);
 
-//ostream& operator<<(ostream& output, const Candy& candy);
-
-//istream& operator>>(istream& input, const Candy& candy);
-
 ofstream& operator<<(ofstream& output, const Candy& candy);
-
 ifstream& operator>>(ifstream& input, Candy& candy); // en llegir d'un fitxer et retorna el candy, serveix pel metode inicialitza de partida
 
 Candy StringACandy(const string& stri);
 
-//ostream& operator<<(ostream& output, const Candy& candy);
-
-//istream& operator>>(istream& input, const Candy& candy);
-
 ofstream& operator<<(ofstream& output, const Candy& candy);
-
 ifstream& operator>>(ifstream& input, Candy& candy); // en llegir d'un fitxer et retorna el candy, serveix pel metode inicialitza de partida
 
 
