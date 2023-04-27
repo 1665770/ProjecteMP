@@ -40,7 +40,9 @@ typedef enum
 } Direccio;
 
 #define N_FILES 10
+#define MAX_FILES 10
 #define N_COLUMNES 10
+#define MAX_COLUMNES 10
 #define N_TIPUS_CARMELS 6 //ANDREU
 
 #endif

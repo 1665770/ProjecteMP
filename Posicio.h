@@ -14,6 +14,7 @@ public:
 	int GetColumna() const { return m_columna; }
 	void setFila(const int fila) { m_fila = fila; }
 	void setColumna(const int columna) { m_columna = columna; }
+	void set(int fila, int columna) { m_fila = fila; m_columna = columna; }
 	void inicialitza() { m_fila = -1; m_columna = -1; }
 
 	Posicio sumaFila(int filaASumar) { Posicio pos(m_fila + filaASumar, m_columna); return pos; }

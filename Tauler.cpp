@@ -6,7 +6,7 @@ void Tauler::DeterminaRatllatPrimari(Posicio CaramelsRatllats[], const Posicio& 
 	//coincideix en fila o columna amb alguna de les posicions
 	if (CaramelsRatllats[0].GetColumna() != -1)
 	{
-		if (pos1.GetColumna() == pos2.GetColumna())
+		if (pos1.GetColumna() != pos2.GetColumna())
 		{
 			direccioCaramel[0] = HORIZONTAL;
 			if (CaramelsRatllats[0].GetFila() == pos1.GetFila())
@@ -23,6 +23,26 @@ void Tauler::DeterminaRatllatPrimari(Posicio CaramelsRatllats[], const Posicio& 
 				CaramelsRatllats[0] = pos2;
 		}
 		colorCaramel[0] = m_tauler[CaramelsRatllats[0].GetFila()][CaramelsRatllats[0].GetColumna()].getColor();
+	}
+	if (CaramelsRatllats[1].GetColumna() != -1)
+	{
+		if (pos1.GetColumna() == pos2.GetColumna())
+		{
+			direccioCaramel[1] = HORIZONTAL;
+			if (CaramelsRatllats[1].GetFila() == pos1.GetFila())
+				CaramelsRatllats[1] = pos1;
+			else
+				CaramelsRatllats[1] = pos2;
+		}
+		else
+		{
+			direccioCaramel[1] = VERTICAL;
+			if (CaramelsRatllats[1].GetColumna() == pos1.GetColumna())
+				CaramelsRatllats[1] = pos1;
+			else
+				CaramelsRatllats[1] = pos2;
+		}
+		colorCaramel[1] = m_tauler[CaramelsRatllats[1].GetFila()][CaramelsRatllats[1].GetColumna()].getColor();
 	}
 }
 
@@ -50,7 +70,7 @@ void Tauler::CreaRatllat(Posicio CaramelsRatllats[], Direccio direccioCaramel[],
 	while (CaramelsRatllats[i].GetColumna() != -1)
 	{
 		m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].setColor(colorCaramel[i]);
-		if (direccioCaramel[i] = HORIZONTAL)
+		if (direccioCaramel[i] == HORIZONTAL)
 		{
 			m_tauler[CaramelsRatllats[i].GetFila()][CaramelsRatllats[i].GetColumna()].setTipus(RATLLAT_HORIZONTAL);
 		}
@@ -87,7 +107,7 @@ void Tauler::BorraPosicions(Posicio PosicionsABorrarH[], Posicio PosicionsABorra
 		}
 		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_HORIZONTAL)
 		{
-			for (int columna = 0;columna < N_COLUMNES;columna++)
+			for (int columna = 0; columna < N_COLUMNES; columna++)
 			{
 				m_tauler[PosicionsABorrarH[i].GetFila()][columna].setTipus(NO_TIPUS);
 				m_tauler[PosicionsABorrarH[i].GetFila()][columna].setColor(NO_COLOR);
@@ -95,10 +115,10 @@ void Tauler::BorraPosicions(Posicio PosicionsABorrarH[], Posicio PosicionsABorra
 		}
 		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_VERTICAL)
 		{
-			for (int fila = 0;fila < N_FILES;fila++)
+			for (int fila = 0; fila < N_FILES; fila++)
 			{
-				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setTipus(NO_TIPUS);
-				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setColor(NO_COLOR);
+				m_tauler[fila][PosicionsABorrarH[i].GetColumna()].setTipus(NO_TIPUS);
+				m_tauler[fila][PosicionsABorrarH[i].GetColumna()].setColor(NO_COLOR);
 			}
 		}
 		i++;
@@ -108,25 +128,25 @@ void Tauler::BorraPosicions(Posicio PosicionsABorrarH[], Posicio PosicionsABorra
 
 	while (PosicionsABorrarV[i].GetColumna() != -1)
 	{
-		if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() != RATLLAT_VERTICAL && m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() != RATLLAT_HORIZONTAL)
+		if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() != RATLLAT_VERTICAL && m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() != RATLLAT_HORIZONTAL)
 		{
 			m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setColor(NO_COLOR);
 			m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setTipus(NO_TIPUS);
 		}
 		else if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() == RATLLAT_VERTICAL)
 		{
-			for (int fila = 0;fila < N_FILES;fila++)
+			for (int fila = 0; fila < N_FILES; fila++)
 			{
-				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setTipus(NO_TIPUS);
-				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setColor(NO_COLOR);
+				m_tauler[fila][PosicionsABorrarV[i].GetColumna()].setTipus(NO_TIPUS);
+				m_tauler[fila][PosicionsABorrarV[i].GetColumna()].setColor(NO_COLOR);
 			}
 		}
-		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_HORIZONTAL)
+		else if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() == RATLLAT_HORIZONTAL)
 		{
-			for (int columna = 0;columna < N_COLUMNES;columna++)
+			for (int columna = 0; columna < N_COLUMNES; columna++)
 			{
-				m_tauler[CaramelsRatllats[i].GetFila()][columna].setTipus(NO_TIPUS);
-				m_tauler[CaramelsRatllats[i].GetFila()][columna].setColor(NO_COLOR);
+				m_tauler[PosicionsABorrarV[i].GetFila()][columna].setTipus(NO_TIPUS);
+				m_tauler[PosicionsABorrarV[i].GetFila()][columna].setColor(NO_COLOR);
 			}
 		}
 

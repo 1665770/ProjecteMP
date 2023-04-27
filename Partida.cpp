@@ -78,6 +78,7 @@ void Partida::fesMoviment(const Posicio& pos1, const Posicio& pos2) //ES DONA PE
 	else
 	{
 		// borra els candis dels arrays de posicions i a més crea els ratllats
+		m_nMoviments--;
 		m_tauler.BorraPosicions(PosicionsABorrarH, PosicionsABorrarV, PosicionsRatllat, pos1, pos2, MATCHING_PRIMARI);
 		m_tauler.BaixaCandys();
 		m_tauler.GeneraNousCandys();
@@ -187,7 +188,7 @@ void Partida::escriuTauler(const string& nomFitxer)
 	fitxer.open(nomFitxer);
 	if (fitxer.is_open())
 	{
-		fitxer << m_objectiu << " " << m_nObjectius << " " << m_nMoviments << endl;
+		//fitxer << m_objectiu << " " << m_nObjectius << " " << m_nMoviments << endl;
 		fitxer << m_tauler;
 		fitxer.close();
 	}
