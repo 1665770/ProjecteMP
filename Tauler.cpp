@@ -80,15 +80,56 @@ void Tauler::BorraPosicions(Posicio PosicionsABorrarH[], Posicio PosicionsABorra
 	int i = 0;
 	while (PosicionsABorrarH[i].GetColumna() != -1)
 	{
-		m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setColor(NO_COLOR);
-		m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setTipus(NO_TIPUS);
+		if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() != RATLLAT_HORIZONTAL && m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() != RATLLAT_VERTICAL)
+		{
+			m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setColor(NO_COLOR);
+			m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].setTipus(NO_TIPUS);
+		}
+		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_HORIZONTAL)
+		{
+			for (int columna = 0;columna < N_COLUMNES;columna++)
+			{
+				m_tauler[PosicionsABorrarH[i].GetFila()][columna].setTipus(NO_TIPUS);
+				m_tauler[PosicionsABorrarH[i].GetFila()][columna].setColor(NO_COLOR);
+			}
+		}
+		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_VERTICAL)
+		{
+			for (int fila = 0;fila < N_FILES;fila++)
+			{
+				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setTipus(NO_TIPUS);
+				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setColor(NO_COLOR);
+			}
+		}
 		i++;
 	}
+
 	i = 0;
+
 	while (PosicionsABorrarV[i].GetColumna() != -1)
 	{
-		m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setColor(NO_COLOR);
-		m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setTipus(NO_TIPUS);
+		if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() != RATLLAT_VERTICAL && m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() != RATLLAT_HORIZONTAL)
+		{
+			m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setColor(NO_COLOR);
+			m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].setTipus(NO_TIPUS);
+		}
+		else if (m_tauler[PosicionsABorrarV[i].GetFila()][PosicionsABorrarV[i].GetColumna()].getTipus() == RATLLAT_VERTICAL)
+		{
+			for (int fila = 0;fila < N_FILES;fila++)
+			{
+				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setTipus(NO_TIPUS);
+				m_tauler[fila][CaramelsRatllats[i].GetColumna()].setColor(NO_COLOR);
+			}
+		}
+		else if (m_tauler[PosicionsABorrarH[i].GetFila()][PosicionsABorrarH[i].GetColumna()].getTipus() == RATLLAT_HORIZONTAL)
+		{
+			for (int columna = 0;columna < N_COLUMNES;columna++)
+			{
+				m_tauler[CaramelsRatllats[i].GetFila()][columna].setTipus(NO_TIPUS);
+				m_tauler[CaramelsRatllats[i].GetFila()][columna].setColor(NO_COLOR);
+			}
+		}
+
 		i++;
 	}
 	// finalment creem els ratllats a les posicions que els hi pertoquen
@@ -124,7 +165,7 @@ void Tauler::BaixaCandys()
 	}
 }
 
-void Tauler::GeneraNousCandys() //ANDREU // FA QUE ES GENERIN NOUS CANDYS A LES POSICIONS BUIDES
+void Tauler::GeneraNousCandys() // FA QUE ES GENERIN NOUS CANDYS A LES POSICIONS BUIDES
 {
 	for (int fila = N_FILES - 1; fila >= 0; fila--)
 	{
