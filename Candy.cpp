@@ -1,5 +1,6 @@
 #include "Candy.h"
 
+
 Candy StringACandy(const string& stri)
 {
 	Candy candy;
@@ -92,6 +93,8 @@ void Candy::convertirAString(string& color) const
 	default:
 		break;
 	}
-	// aquest script cambiara quan fem el ratllat, ara per ara tots son normals
+	if (m_tipus == RATLLAT_HORIZONTAL || m_tipus == RATLLAT_VERTICAL)
+	{
+		color = tolower(color[0]);
+	}
 }
-

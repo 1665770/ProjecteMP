@@ -1,13 +1,6 @@
-#pragma once
-#include "Posicio.h"
+#ifndef PARTIDA_H
+#define PARTIDA_H
 #include "Tauler.h"
-#include "Candy.h"
-#include "utils.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-
-using namespace std;
 
 class Partida
 {
@@ -16,9 +9,18 @@ public:
 	void inicialitza(const string& nomFitxer);
 	void fesMoviment(const Posicio& pos1, const Posicio& pos2);
 	void escriuTauler(const string& nomFitxer);
+	bool comprovacioH();
+	bool comprovacioV();
 private:
 	Tauler m_tauler;
 	Candy m_objectiu;
 	int m_nMoviments;
 	int m_nObjectius;
+	vector <Posicio> PosicionsABorrarH;
+	vector <Posicio> PosicionsABorrarV;
+	vector <MatchEspecial> CaramelsRatllats;
 };
+
+void afegeixPosicions(vector <Posicio> &posicions, Posicio pos);
+
+#endif
